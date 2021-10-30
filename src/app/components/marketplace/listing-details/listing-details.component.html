@@ -1,0 +1,74 @@
+<div class="centered">
+    <p class="title">
+        {{listing.durationInSeconds != -1 ? "Rental" : "Sale "}} #{{tokenId}}
+    </p>
+    <div *ngIf="!isNullListing()">
+        <div class="image-div centered">
+            <img class="nft-image" *ngIf="nftSvg" [src]="nftSvg">
+        </div>
+        <div class="listing-info">
+            <p class="bold">{{listing.pairing[0].symbol}} / {{listing.pairing[1].symbol}}&nbsp;&nbsp;|&nbsp;&nbsp;{{listing.position.fee}}%</p>
+            <p>            
+                <img class="eth-logo" src="/assets/eth_logo.svg">
+                {{listing.priceInEther}} (${{(listing.priceInEther * ethPrice).toFixed(2)}})
+            </p>
+            <p *ngIf="listing.durationInSeconds != -1">
+                <mat-icon [inline]="true">schedule</mat-icon>
+                    &nbsp;
+                    {{deltaToString(listing.durationInSeconds)}}
+            </p>
+            <p>
+                {{getPriceRange(true, true)}} <-> {{getPriceRange(true, false)}} {{listing.pairing[listing.position.rangeToShow].symbol}} per {{listing.pairing[(listing.position.rangeToShow - 1)*-1].symbol}}
+            </p>
+            <p>
+                {{listing.position.tokensDeposited[0].toFixed(4)}} {{listing.pairing[0].symbol}}
+            </p>
+            <p>
+                {{listing.position.tokensDeposited[1].toFixed(4)}} {{listing.pairing[1].symbol}}
+            </p>
+        </div> 
+        <div class="rent-btn">
+            <button *ngIf="isSeller && !listing.expiryDate" (click)="removeListing()" class="button button--mimas">
+                <span *ngIf="!loading">Remove</span>
+                <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+            </button>
+            <button *ngIf="isSeller && listing.expiryDate && timedelta(listing.expiryDate) == 'Expired'" (click)="reclaimLiquidity()" class="button button--mimas">
+                <span *ngIf="!loading">Reclaim</span>
+                <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+            </button>
+            <button *ngIf="isBuyer" (click)="collectFees()" class="button button--mimas">
+                <span *ngIf="!loading">Harvest</span>
+                <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+            </button>
+            <button *ngIf="!listing.buyer && !isSeller && !isBuyer" (click)="purchaseListing()" class="button button--mimas">
+                <span *ngIf="!loading">Rent</span>
+                <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+            </button>
+        </div>
+        <div class="centered chart-div">
+            <canvas baseChart 
+                [datasets]="chartData[0]"
+                [labels]="this.chartLabels[0]"
+                [options]="chartOptions[0]"
+                [legend]="true"
+                [colors]="metricsColors"
+                [chartType]="barChartType">
+            </canvas>
+        </div>
+        <div class="centered chart-div">
+            <canvas baseChart 
+                [datasets]="chartData[1]"
+                [labels]="this.chartLabels[1]"
+                [options]="chartOptions[1]"
+                [legend]="true"
+                [colors]="metricsColors"
+                [chartType]="'scatter'">
+            </canvas>
+        </div>
+    </div>
+    
+    <div *ngIf="loading && isNullListing()" class="centered">
+        <mat-spinner style="margin: auto;" diameter="20"></mat-spinner>
+    </div>
+</div>
+

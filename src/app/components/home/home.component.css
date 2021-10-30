@@ -1,0 +1,37 @@
+.title {
+    font-family: "Roboto",sans-serif;
+}
+
+.defiquity-logo {
+    margin: 20px auto 0 auto;
+    width: 10%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.textblock {
+    margin: 0 auto;
+    text-align: left;
+    padding: 10px;
+    line-height: 1.75;
+    /* background-color: rgba(237,238,242, .9); */
+    font-size: 15px;
+    width: fit-content;
+}
+
+.about {
+    width: fit-content;
+    max-width: 60%;
+}
+
+.subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    padding: 2em 0 0 0;
+
+}
+
+.center-text {
+    text-align: center;
+}

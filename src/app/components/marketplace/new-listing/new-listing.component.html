@@ -1,0 +1,68 @@
+<p class="title">Create Listing</p>
+<div class="container">
+    <div class="form">
+        <div class="field" tabindex="1">
+            <label for="type">
+                <i class="far fa-envelope"></i>Listing Type:
+            </label>
+            <select class="listing-type" [(ngModel)]="listingType">
+                <option [ngValue]="getListingType(0)" selected>Rental</option>
+                <option [ngValue]="getListingType(1)" >Sale</option>
+                <option [ngValue]="getListingType(2)" >Option Sale</option>
+            </select>
+        </div>
+        <div class="field" tabindex="2">
+            <label for="tokenId">
+                <i class="far fa-user"></i>Token ID
+            </label>
+            <input [formControl]="tokenId" [ngClass]="{ 'error': error && tokenId.invalid }" name="tokenId" type="text" placeholder="12345" required>
+        </div>
+        <div class="field" tabindex="3">
+            <label for="priceInEther">
+                <i class="far fa-user"></i>Price (in Ether)
+            </label>
+            <input [formControl]="priceInEther" [ngClass]="{ 'error': error && priceInEther.invalid }" name="priceInEther" type="text" placeholder="0.01" required>
+        </div>
+        <div *ngIf="!isSale()" class="field" tabindex="4">
+            <label for="duration">
+                <i class="far fa-envelope"></i>{{isRental() ? "Rental Duration" : "Option Duration"}}
+            </label>
+            <div class="runtime">
+                <input [formControl]="duration" [ngClass]="{ 'error': error && duration.invalid }" name="duration" type="text" placeholder="30" required>
+                <select id="standard-select" [formControl]="durationUnits">
+                    <option value="w">Weeks</option>
+                    <option value="d" selected>Days</option>
+                    <option value="h">Hours</option>
+                    <option value="m">Minutes</option>
+                    <option value="s">Seconds</option>
+                </select>
+            </div>
+            <p class="error-txt" *ngIf="error && duration.invalid">Duration must be a number. Choose between seconds, minutes, hours, days, or weeks.</p>
+        </div>
+        <div *ngIf="isOption()" class="field" tabindex="5">
+            <label for="percentage">
+                <i class="far fa-user"></i>% of Position to Allocate
+            </label>
+            <input [formControl]="percentage" [ngClass]="{ 'error': error && percentage.invalid }" name="percentage" type="text" placeholder="100" required>
+            <p class="error-txt" *ngIf="error && duration.invalid">Duration must be an integer from 1 to 100</p>
+        </div>
+        <div *ngIf="isOption()" class="field" tabindex="6">
+            <label for="tokenAddress">
+                <i class="far fa-user"></i>Long Token Address 
+            </label>
+            <input [formControl]="tokenAddress" [ngClass]="{ 'error': error && tokenAddress.invalid }" name="tokenAddress" type="text" placeholder="0x00000..." required>
+        </div>
+        <div *ngIf="error || postError">
+            <p *ngIf="error">Please fill out all of the required fields.</p>
+            <p *ngIf="postError">Transaction rejected by smart contract. Please ensure your inputs are correct and you are the owner of the position.</p>
+        </div>
+        <div class="centered" (click)="submitForm()">
+            <button  class="button button--mimas">
+                <div class="centered">
+                    <span *ngIf="!loading">Create Listing</span>
+                    <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="25"></mat-spinner></span>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>

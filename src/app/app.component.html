@@ -1,0 +1,18 @@
+<header class="header">
+  <div class="header-items" >
+    <div class="header-item" [ngClass]="{ 'active' : route == '/' }" routerLink="/">
+      <span class="centered">Defiquity</span>
+    </div>
+    <div class="header-item" [ngClass]="{ 'active' : route == '/listings' }" routerLink='/listings'>
+      <span class="centered">Listings</span>
+    </div>
+    <div class="header-item" [ngClass]="{ 'active' : route == '/new' }" routerLink='/new'>
+      <span class="centered">Create</span>
+    </div>
+    <div class="header-item" [ngClass]="{ 'active' : route == '/profile' }" routerLink='/profile'>
+      <span class="centered">My NFTs</span>
+    </div>
+  </div>
+</header>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,4 @@
+
+FIX FOR SHITTY WEBPACK 5:
+https://stackoverflow.com/questions/67572355/webpack-5-angular-polyfill-for-node-js-crypto-js 
+https://stackoverflow.com/questions/50313745/angular-6-process-is-not-defined-when-trying-to-serve-application

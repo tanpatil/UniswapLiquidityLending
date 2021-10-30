@@ -1,0 +1,10 @@
+.listings-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.rent-btn {
+    margin: 10px;
+}

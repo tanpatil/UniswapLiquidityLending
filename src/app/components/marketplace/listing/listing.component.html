@@ -1,0 +1,74 @@
+<div class="listing">
+    <div class="listing-fields">
+        <div class="image-div">
+            <img class="nft-image" *ngIf="nftSvg" [src]="nftSvg">
+        </div>
+        <div class="listing-info">
+            <ul *ngIf="!isOption" class="grid1">
+                <li class="bold">{{listing.pairing[0].symbol}} / {{listing.pairing[1].symbol}}&nbsp;&nbsp;|&nbsp;&nbsp;{{listing.position.fee}}%</li>
+                <li>
+                    <img class="eth-logo" src="/assets/eth_logo.svg">
+                </li>
+                <li>
+                    {{listing.priceInEther}} (${{(listing.priceInEther * ethPrice).toFixed(2)}})
+                </li>
+            </ul>
+            <ul *ngIf="isOption" class="grid1">
+                <li class="bold">{{listing.longToken.symbol}} Call&nbsp;&nbsp;|&nbsp;&nbsp;{{getPriceRange(true, true, true)}} {{listing.paymentToken.symbol}}</li>
+                <li>
+                    <img class="eth-logo" src="/assets/eth_logo.svg">
+                </li>
+                <li>
+                    {{listing.premium}} (${{(listing.premium * ethPrice).toFixed(2)}})
+                </li>
+            </ul>
+            <ul class="grid1">
+                <li>#{{listing.tokenId}}</li>
+                <li *ngIf="isRental || isOption">
+                    <mat-icon [inline]="true">schedule</mat-icon>
+                </li>
+                <li *ngIf="isRental || isOption">
+                    {{isRental ? listing.expiryDate ? timedelta(listing.expiryDate) + " left" : deltaToString(listing.durationInSeconds) : listing.expiryDate}}
+                </li>
+            </ul>
+            <ul class="grid2" *ngIf="!isOption">
+                <li>{{getPriceRange(true, true)}} <-> {{getPriceRange(true, false)}}</li>
+                <li>{{listing.pairing[listing.position.rangeToShow].symbol}} per {{listing.pairing[(listing.position.rangeToShow - 1)*-1].symbol}}</li>
+            </ul>
+            <ul class="grid2" *ngIf="!isOption">
+                <li>{{listing.position.tokensDeposited[0].toFixed(4)}} {{listing.pairing[0].symbol}}</li>
+                <li>{{listing.position.tokensDeposited[1].toFixed(4)}} {{listing.pairing[1].symbol}}</li>
+            </ul>
+            <div>
+                <div class="rent-btn">
+                    <button *ngIf="!isOption" [routerLink]="'/listing/' + listing.tokenId" class=" details-btn button button--mimas">
+                        <span>Details</span>
+                    </button>
+                    <button *ngIf="isOwner && isOption" (click)="exercise()" class="button button--mimas">
+                        <span *ngIf="!loading">Exercise</span>
+                        <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+                    </button>
+                    <button *ngIf="isOwner && !listing.expiryDate" (click)="removeListing()" class="button button--mimas">
+                        <span *ngIf="!loading">Remove</span>
+                        <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+                    </button>
+                    <button *ngIf="isRental && isOwner && listing.expiryDate && timedelta(listing.expiryDate) == 'Expired'" (click)="reclaimLiquidity()" class="button button--mimas">
+                        <span *ngIf="!loading">Reclaim</span>
+                        <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+                    </button>
+                    <button *ngIf="isRental && isRenter" (click)="collectFees()" class="button button--mimas">
+                        <span *ngIf="!loading">Harvest</span>
+                        <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+                    </button>
+                    <button *ngIf="!listing.buyer && !isOwner && !isRenter" (click)="purchaseListing()" class="button button--mimas">
+                        <span *ngIf="!loading">{{isRental ? 'Rent' : 'Buy'}}</span>
+                        <span *ngIf="loading"><mat-spinner style="margin: auto;" diameter="20"></mat-spinner></span>
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

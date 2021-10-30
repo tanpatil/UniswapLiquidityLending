@@ -1,0 +1,23 @@
+.bold {
+    font-weight: 600;
+}
+
+.eth-logo {
+    height: 1.3em;
+    width: auto;
+    vertical-align: middle;
+    margin-top: -1px;
+}
+
+.image-div {
+    width: 12%;
+}
+
+.nft-image {
+    width: 100%;
+    height: auto;
+}
+
+.chart-div {
+    width: 50%;
+}
